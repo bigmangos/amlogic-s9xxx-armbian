@@ -26,6 +26,7 @@ on:
         type: choice
         options:
           - all
+          - tn3568
           - s905w_s905x_s905mb_s905l3a_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
           - s905x3-x88-pro-x3_s912-m8s-pro_s905x-t95_s912-t95z-plus_s905l3-unt400g1_s905lb-r3300l
           - s912-x92_s922x_s922x-ct2000_s922x-reva_seewo-sv21_smart-am40_station-m1_sw799_swan1-w28
@@ -230,7 +231,7 @@ on:
         options:
           - ophub
           - angel
-          - yourname
+          - bigmangos
 
 env:
   TZ: America/New_York
@@ -293,7 +294,7 @@ jobs:
           df -hT ${PWD}
           git clone -q --single-branch --depth=1 --branch=main https://github.com/armbian/build.git build
           ln -sf /builder/build ${GITHUB_WORKSPACE}/build
-          ln -sf /builder/build /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/build
+          ln -sf /builder/build /home/runner/work/_actions/bigmangos/amlogic-s9xxx-armbian/main/build
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile Armbian [ ${{ inputs.set_release }} ]
@@ -331,7 +332,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Rebuild Armbian
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: bigmangos/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: armbian
