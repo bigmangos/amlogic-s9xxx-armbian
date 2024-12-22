@@ -13,15 +13,18 @@ on:
       kernel_source:
         description: "Select the kernel source"
         required: false
-        default: "unifreq"
+        default: "bigmangos/linux-rockchip@rk-6.1-rkr4.1"
         type: choice
         options:
           - unifreq
           - codesnas
+          - bigmangos
+          - bigmangos/linux-5.10.y-rk35xx
+          - bigmangos/linux-rockchip@rk-6.1-rkr4.1
       kernel_version:
         description: "Select kernel version"
         required: false
-        default: "6.6.y"
+        default: "6.1.y"
         type: choice
         options:
           - 5.4.y
@@ -70,11 +73,11 @@ on:
       kernel_sign:
         description: "Set the kernel custom signature"
         required: false
-        default: "-ophub"
+        default: "-bigmangos"
         type: choice
         options:
           - -ophub
-          - -yourname
+          - -bigmangos
 
 env:
   TZ: America/New_York
@@ -135,12 +138,12 @@ jobs:
         run: |
           df -hT ${PWD}
           mkdir -p /builder/{kernel,output}
-          ln -sf /builder/kernel /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/compile-kernel/kernel
-          ln -sf /builder/output /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/compile-kernel/output
+          ln -sf /builder/kernel /home/runner/work/_actions/bigmangos/amlogic-s9xxx-armbian/main/compile-kernel/kernel
+          ln -sf /builder/output /home/runner/work/_actions/bigmangos/amlogic-s9xxx-armbian/main/compile-kernel/output
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: bigmangos/amlogic-s9xxx-armbian@main
         if: ${{ steps.mapped.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: kernel
